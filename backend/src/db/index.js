@@ -7,6 +7,9 @@ const needsSsl = process.env.NODE_ENV === 'production' || dbUrl.includes('supaba
 const pool = new Pool({
   connectionString: dbUrl,
   ssl: needsSsl ? { rejectUnauthorized: false } : false,
+  connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 30000,
+  max: 10,
 });
 
 module.exports = { query: (text, params) => pool.query(text, params) };
