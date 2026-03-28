@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS attachments CASCADE;
 DROP TABLE IF EXISTS checklist_items CASCADE;
 DROP TABLE IF EXISTS card_members CASCADE;
 DROP TABLE IF EXISTS card_labels CASCADE;
+DROP TABLE IF EXISTS starred_boards CASCADE;
 DROP TABLE IF EXISTS labels CASCADE;
 DROP TABLE IF EXISTS members CASCADE;
 DROP TABLE IF EXISTS cards CASCADE;
@@ -27,6 +28,13 @@ CREATE TABLE boards (
   bg_type    VARCHAR(20)  NOT NULL DEFAULT 'color' CHECK (bg_type IN ('color','gradient','image')),
   bg_value   VARCHAR(255) NOT NULL DEFAULT '#0052cc',
   created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Starred Boards (join)
+CREATE TABLE starred_boards (
+  member_id INTEGER NOT NULL REFERENCES members(id) ON DELETE CASCADE,
+  board_id  INTEGER NOT NULL REFERENCES boards(id) ON DELETE CASCADE,
+  PRIMARY KEY (member_id, board_id)
 );
 
 -- Lists
