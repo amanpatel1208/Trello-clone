@@ -1,0 +1,3 @@
+-- Add color and archived columns to lists table
+ALTER TABLE lists ADD COLUMN IF NOT EXISTS color VARCHAR(255) NOT NULL DEFAULT '#000000';
+ALTER TABLE lists ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE;
