@@ -1,4 +1,4 @@
-const BASE = (import.meta.env.VITE_API_URL || 'http://localhost:5001') + '/api';
+const BASE = (import.meta.env.VITE_API_URL || 'https://trello-clone-lwq4.onrender.com') + '/api';
 
 const req = async (url, opts = {}) => {
   const r = await fetch(BASE + url, { headers: { 'Content-Type': 'application/json' }, cache: 'no-store', ...opts });
