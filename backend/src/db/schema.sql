@@ -58,6 +58,8 @@ CREATE TABLE cards (
   cover_value VARCHAR(255),
   archived    BOOLEAN NOT NULL DEFAULT FALSE,
   position    INTEGER NOT NULL DEFAULT 0,
+  due_date    TIMESTAMPTZ,
+  is_complete BOOLEAN NOT NULL DEFAULT FALSE,
   created_at  TIMESTAMPTZ DEFAULT NOW()
 );
 
