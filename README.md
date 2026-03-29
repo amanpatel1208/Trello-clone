@@ -2,7 +2,9 @@
 
 A full-stack Kanban board application inspired by Trello, built with **React** and **Node.js/Express**. Features drag-and-drop task management, rich card details, real-time collaboration tools, and a polished dark-themed UI with glassmorphic design elements.
 
-![Board View](https://img.shields.io/badge/status-active-brightgreen) ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react) ![Express](https://img.shields.io/badge/Express-5-000000?logo=express) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql) ![Netlify](https://img.shields.io/badge/Netlify-deployed-00C7B7?logo=netlify) ![Render](https://img.shields.io/badge/Render-deployed-46E3B7?logo=render)
+![Board View](https://img.shields.io/badge/status-active-brightgreen) ![React](https://img.shields.io/badge/React-19-61DAFB?logo=react) ![Express](https://img.shields.io/badge/Express-5-000000?logo=express) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql) ![Netlify](https://img.shields.io/badge/Netlify-deployed-00C7B7?logo=netlify) ![AWS](https://img.shields.io/badge/AWS_EC2-deployed-FF9900?logo=amazonaws)
+
+> 🌐 **Live Demo**: [https://trello-clone-aman.netlify.app](https://trello-clone-aman.netlify.app)
 
 ---
 
@@ -40,7 +42,8 @@ A full-stack Kanban board application inspired by Trello, built with **React** a
 
 ### UI/UX
 - 🌙 Premium dark theme with glassmorphic panels
-- 🎯 Responsive layout
+- 🎯 Fully responsive (mobile, tablet, desktop)
+- 📱 Mobile sidebar with hamburger toggle
 - 📆 Calendar/Planner panel
 - 🔄 Board switcher
 - 👤 Member activity dropdown
@@ -54,9 +57,9 @@ A full-stack Kanban board application inspired by Trello, built with **React** a
 | ------------ | ----------------------------------------------------------------------- |
 | **Frontend** | React 19, React Router 7, @dnd-kit (drag & drop), React Markdown, Vite |
 | **Backend**  | Node.js, Express 5, pg (node-postgres)                                  |
-| **Database** | PostgreSQL (Supabase-hosted)                                            |
+| **Database** | PostgreSQL (NeonDB-hosted)                                              |
 | **Styling**  | Vanilla CSS with CSS custom properties                                  |
-| **Hosting**  | Netlify (frontend) · Render (backend)                                   |
+| **Hosting**  | Netlify (frontend) · AWS EC2 (backend, Nginx + PM2 + HTTPS)             |
 
 ---
 
@@ -123,7 +126,7 @@ trello-clone/
 
 - **Node.js** ≥ 18
 - **npm** ≥ 9
-- **PostgreSQL** database (or a [Supabase](https://supabase.com) project)
+- **PostgreSQL** database (or a [NeonDB](https://neon.tech) / [Supabase](https://supabase.com) project)
 
 ### 1. Clone the repository
 
@@ -185,46 +188,30 @@ Navigate to **http://localhost:5173**
 
 ## 🌐 Deployment
 
-### Backend → Render
+### Backend → AWS EC2
 
-#### Option A: One-Click Deploy (Render Blueprint)
+The backend runs on an **AWS EC2 t3.micro** instance with Nginx as a reverse proxy, PM2 for process management, and Let's Encrypt SSL via a DuckDNS subdomain.
 
-1. Push your code to GitHub
-2. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**
-3. Connect your GitHub repo — Render will auto-detect `render.yaml`
-4. Set the environment variables when prompted:
+1. **Provision** a `t3.micro` Ubuntu EC2 instance
+2. **Install** Node.js 20.x, Nginx, PM2
+3. **Clone** the repo and set up `backend/.env`:
 
-   | Variable       | Value                                           |
-   | -------------- | ----------------------------------------------- |
-   | `DATABASE_URL` | Your Supabase PostgreSQL connection string       |
-   | `FRONTEND_URL` | Your Netlify URL (e.g. `https://your-app.netlify.app`) |
-
-5. Click **Apply** — Render will build and deploy automatically
-
-#### Option B: Manual Setup
-
-1. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Web Service**
-2. Connect your GitHub repo
-3. Configure:
-
-   | Setting           | Value          |
-   | ----------------- | -------------- |
-   | **Name**          | `todoist-api`  |
-   | **Root Directory**| `backend`      |
-   | **Runtime**       | `Node`         |
-   | **Build Command** | `npm install`  |
-   | **Start Command** | `npm start`    |
-
-4. Add environment variables:
-
-   ```
-   NODE_ENV=production
-   DATABASE_URL=<your-supabase-connection-string>
+   ```env
+   DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+   PORT=5001
    FRONTEND_URL=https://your-app.netlify.app
+   NODE_ENV=production
    ```
 
-5. Click **Create Web Service**
-6. Note your Render URL (e.g. `https://todoist-api.onrender.com`)
+4. **Start** the backend:
+
+   ```bash
+   cd backend && npm install && pm2 start index.js --name trello-api
+   pm2 save && pm2 startup
+   ```
+
+5. **Configure Nginx** as a reverse proxy (port 80/443 → localhost:5001)
+6. **Set up SSL** with Certbot + DuckDNS for free HTTPS
 
 ---
 
@@ -244,7 +231,7 @@ Navigate to **http://localhost:5173**
 
    | Variable        | Value                                              |
    | --------------- | -------------------------------------------------- |
-   | `VITE_API_URL`  | Your Render backend URL (e.g. `https://todoist-api.onrender.com`) |
+   | `VITE_API_URL`  | Your EC2 backend URL (e.g. `https://your-domain.duckdns.org`) |
 
    > ⚠️ **Important**: Do NOT include a trailing slash or `/api` — the app appends `/api` automatically.
 
@@ -254,17 +241,16 @@ Navigate to **http://localhost:5173**
 
 ### Post-Deployment Checklist
 
-- [ ] Backend health check: visit `https://your-render-url.onrender.com/health` — should return `{"status":"ok"}`
-- [ ] Update `FRONTEND_URL` on Render with your actual Netlify URL
-- [ ] Update `VITE_API_URL` on Netlify with your actual Render URL
-- [ ] Trigger a redeploy on Netlify after updating the env var (Site settings → Deploys → Trigger deploy)
+- [ ] Backend health check: visit `https://your-backend-domain/health` — should return `{"status":"ok"}`
+- [ ] Update `FRONTEND_URL` on EC2 `.env` with your actual Netlify URL
+- [ ] Update `VITE_API_URL` on Netlify with your actual EC2/domain URL
 - [ ] Test the live app: create a board, add cards, drag & drop
 
 ---
 
 ## 🔌 API Reference
 
-All endpoints are prefixed with `/api`. Base URL in production: `https://your-render-url.onrender.com/api`
+All endpoints are prefixed with `/api`. Base URL in production: `https://your-backend-domain/api`
 
 ### Boards
 
@@ -369,20 +355,20 @@ boards ──┬── lists ──── cards ──┬── card_labels ─�
 
 ## 🔧 Environment Variables
 
-### Backend (Render)
+### Backend (AWS EC2)
 
-| Variable       | Required | Description                                       |
-| -------------- | -------- | ------------------------------------------------- |
-| `DATABASE_URL` | ✅       | PostgreSQL connection string                       |
-| `PORT`         | ❌       | Server port (Render sets this automatically)       |
-| `NODE_ENV`     | ❌       | Set to `production` on Render (enables SSL for DB) |
-| `FRONTEND_URL` | ✅       | Netlify URL for CORS (comma-separated for multiple)|
+| Variable       | Required | Description                                        |
+| -------------- | -------- | -------------------------------------------------- |
+| `DATABASE_URL` | ✅       | PostgreSQL connection string (with `?sslmode=require`) |
+| `PORT`         | ❌       | Server port (default: `5001`)                       |
+| `NODE_ENV`     | ❌       | Set to `production` (enables SSL for DB)            |
+| `FRONTEND_URL` | ✅       | Netlify URL for CORS (comma-separated for multiple) |
 
 ### Frontend (Netlify)
 
 | Variable       | Required | Description                                        |
 | -------------- | -------- | -------------------------------------------------- |
-| `VITE_API_URL` | ✅       | Render backend URL (e.g. `https://todoist-api.onrender.com`) |
+| `VITE_API_URL` | ✅       | EC2 backend URL (e.g. `https://your-domain.duckdns.org`) |
 
 ---
 
