@@ -91,7 +91,7 @@ export default function Navbar({ boardTitle, onTogglePlanner, onToggleSidebar })
             <rect x="5" y="5" width="6" height="11" rx="1" fill="#fff"/>
             <rect x="13" y="5" width="6" height="7" rx="1" fill="#fff"/>
           </svg>
-          <span className="logo-text">TodiIst</span>
+          <span className="logo-text">Trello Clone</span>
         </Link>
       </div>
 
