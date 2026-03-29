@@ -6,13 +6,8 @@ const app = express();
 
 // CORS — allow frontend origin in production, everything in dev
 const allowedOrigins = process.env.FRONTEND_URL
-  ? [
-      ...process.env.FRONTEND_URL.split(',').map(s => s.trim()),
-      'capacitor://localhost',
-      'http://localhost',
-      'https://localhost',
-    ]
-  : ['http://localhost:5173', 'http://localhost:5174', 'capacitor://localhost', 'http://localhost', 'https://localhost'];
+  ? process.env.FRONTEND_URL.split(',').map(s => s.trim())
+  : ['http://localhost:5173', 'http://localhost:5174'];
 
 app.use(cors({
   origin: (origin, callback) => {
