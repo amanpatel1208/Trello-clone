@@ -123,7 +123,7 @@ CREATE TABLE activity_logs (
 
 -- Members (no duplicates — one Aman Patel with real avatar)
 INSERT INTO members (name, avatar_url, email) VALUES
-  ('Aman Patel',   'https://avatar.iran.liara.run/public/boy?id=5', 'aman@example.com'),
+  ('Aman Patel',   'https://i.pravatar.cc/150?img=11', 'aman@example.com'),
   ('Priya Verma',  'https://i.pravatar.cc/150?img=32', 'priya@example.com'),
   ('Rahul Mehta',  'https://i.pravatar.cc/150?img=7',  'rahul@example.com'),
   ('Sneha Kapoor', 'https://i.pravatar.cc/150?img=47', 'sneha@example.com'),

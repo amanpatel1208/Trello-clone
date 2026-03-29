@@ -5,7 +5,7 @@ const navItems = [
   { icon: '📋', label: 'Boards', path: '/' },
 ];
 
-export default function Sidebar({ currentView = 'boards', onViewChange }) {
+export default function Sidebar({ currentView = 'boards', onViewChange, sidebarOpen }) {
   const location = useLocation();
   const [isWorkspaceExpanded, setIsWorkspaceExpanded] = useState(true);
 
@@ -13,7 +13,7 @@ export default function Sidebar({ currentView = 'boards', onViewChange }) {
   const isActive = (view) => currentView === view;
 
   return (
-    <aside className="app-sidebar">
+    <aside className={`app-sidebar${sidebarOpen ? ' mobile-open' : ''}`}>
       <div className="sidebar-section">
         <Link 
           to="/" 

@@ -101,3 +101,15 @@ textarea { resize: vertical; }
 .avatar-add:hover { background: rgba(255,255,255,0.15); color: var(--text-main); }
 .char-count { font-size: 11px; color: var(--text-sub); text-align: right; margin-top: 2px; }
 .field-error { color: #f87171; font-size: 12px; margin-top: 4px; }
+
+/* ===== RESPONSIVE — MOBILE ===== */
+@media (max-width: 768px) {
+  .overlay {
+    padding-top: 0;
+    align-items: flex-start;
+  }
+  input[type=text], input:not([type]), input[type=date], textarea {
+    font-size: 16px; /* prevent iOS zoom */
+  }
+}
+

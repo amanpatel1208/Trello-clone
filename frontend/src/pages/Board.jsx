@@ -41,6 +41,7 @@ export default function Board() {
   const [boardsOpen, setBoardsOpen] = useState(false);
   const [showMemberActivity, setShowMemberActivity] = useState(false);
   const [archiveStack, setArchiveStack] = useState([]); // For Undo
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const fetchBoardData = useCallback(() => {
     getBoard(id, currentMember?.id).then(data => {
@@ -212,10 +213,11 @@ export default function Board() {
     <div className="app-container" style={{ 
       background: board.bg_type === 'image' ? `url(${board.bg_value}) center/cover fixed` : board.bg_value 
     }}>
-      <Navbar boardTitle={board.title} />
+      <Navbar boardTitle={board.title} onToggleSidebar={() => setSidebarOpen(o => !o)} />
       <CalendarPanel isOpen={plannerOpen} onClose={() => setPlannerOpen(false)} boardId={id} lists={lists} onCardAdded={handleCardUpdated} />
       <BoardSwitcherPanel isOpen={boardsOpen} onClose={() => setBoardsOpen(false)} currentBoardId={id} />
       
+      <div className={`sidebar-backdrop${sidebarOpen ? ' visible' : ''}`} onClick={() => setSidebarOpen(false)} />
       <div className="app-body">
         <main className="board-page">
           <div className="board-header">

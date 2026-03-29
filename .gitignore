@@ -28,3 +28,18 @@ backend/src/db/dev.db
 .agents/
 .kiro/
 skills-lock.json
+
+# Android / Capacitor
+android/.gradle/
+android/app/build/
+android/build/
+android/captures/
+android/local.properties
+android/.idea/
+*.apk
+*.aab
+*.hprof
+
+# iOS (if added later)
+ios/App/Pods/
+ios/App/build/

@@ -4,7 +4,7 @@ import { useMember } from '../context/MemberContext';
 import { searchCards } from '../api';
 import CreateBoardModal from './CreateBoardModal';
 
-export default function Navbar({ boardTitle, onTogglePlanner }) {
+export default function Navbar({ boardTitle, onTogglePlanner, onToggleSidebar }) {
   const { members, currentMember, switchMember } = useMember();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
@@ -82,6 +82,9 @@ export default function Navbar({ boardTitle, onTogglePlanner }) {
   return (
     <nav className="navbar glass-heavy">
       <div className="navbar-left">
+        <button className="mobile-menu-btn" onClick={onToggleSidebar} aria-label="Toggle menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
         <Link to="/" className="navbar-logo" style={{ display: 'flex', alignItems: 'center', gap: 6, textDecoration: 'none', color: 'inherit', marginRight: 12 }}>
           <svg width="22" height="18" viewBox="0 0 24 24" fill="currentColor">
             <rect x="2" y="2" width="20" height="20" rx="3" fill="rgba(255,255,255,0.15)"/>

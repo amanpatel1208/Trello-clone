@@ -448,3 +448,44 @@
   from { opacity: 0; transform: translateY(40px); } 
   to { opacity: 1; transform: translateY(0); } 
 }
+
+/* ===== RESPONSIVE — TABLET ===== */
+@media (max-width: 1024px) {
+  .home-main { padding: 24px 20px; }
+  .boards-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+  .billing-hero-card { padding: 60px 40px; }
+}
+
+/* ===== RESPONSIVE — MOBILE ===== */
+@media (max-width: 768px) {
+  .home-main { padding: 16px 12px; }
+  .home-section { margin-bottom: 32px; }
+  .home-section-title { font-size: 14px; gap: 8px; margin-bottom: 14px; }
+
+  .boards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+  .board-card-top { height: 90px; }
+  .board-card-bottom { padding: 8px 2px; }
+  .board-card-name { font-size: 13px; }
+  .create-board-card { height: 90px; }
+
+  /* Create board popover — wider on mobile */
+  .popover-overlay { padding-top: 8px; }
+  .create-board-popover { width: calc(100vw - 24px); max-width: 360px; }
+  .board-preview-mockup { width: 160px; height: 96px; }
+
+  /* Billing hero */
+  .billing-view-content { padding: 20px 12px; min-height: 50vh; }
+  .billing-hero-card { padding: 40px 24px; border-radius: 20px; }
+  .billing-title { letter-spacing: -0.5px; }
+  .billing-subtitle { font-size: 15px; margin-bottom: 32px; }
+  .billing-features { gap: 8px; margin-bottom: 32px; }
+  .feature-chip { padding: 8px 14px; font-size: 12px; }
+  .billing-btn { padding: 12px 28px; font-size: 14px; }
+
+  /* Sidebar on home */
+  .sidebar-heading { margin: 20px 8px 8px; }
+  .sidebar-item { padding: 8px 10px; }
+}

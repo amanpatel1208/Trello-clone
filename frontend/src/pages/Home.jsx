@@ -15,6 +15,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { currentMember } = useMember();
   const [view, setView] = useState('boards_global');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!currentMember) return;
@@ -32,10 +33,11 @@ export default function Home() {
 
   return (
     <div className="home-page-container">
-      <Navbar />
+      <Navbar onToggleSidebar={() => setSidebarOpen(o => !o)} />
       
+      <div className={`sidebar-backdrop${sidebarOpen ? ' visible' : ''}`} onClick={() => setSidebarOpen(false)} />
       <div className="app-body">
-        <Sidebar currentView={view} onViewChange={setView} />
+        <Sidebar currentView={view} onViewChange={(v) => { setView(v); setSidebarOpen(false); }} sidebarOpen={sidebarOpen} />
         
         <main className="home-main">
           {error && (
