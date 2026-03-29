@@ -1,4 +1,4 @@
-# 📋 Todoist — Trello-Inspired Kanban Board
+# 📋 Trello Clone — Full-Stack Kanban Board
 
 A full-stack Kanban board application inspired by Trello, built with **React** and **Node.js/Express**. Features drag-and-drop task management, rich card details, real-time collaboration tools, and a polished dark-themed UI with glassmorphic design elements.
 
