@@ -1,5 +1,5 @@
 import {
-  DndContext, DragOverlay, PointerSensor, useSensor, useSensors,
+  DndContext, DragOverlay, PointerSensor, MouseSensor, TouchSensor, useSensor, useSensors,
   closestCorners, pointerWithin, rectIntersection, getFirstCollision,
   defaultDropAnimationSideEffects,
 } from '@dnd-kit/core';
@@ -60,7 +60,11 @@ export default function Board() {
     fetchBoardData();
   }, [fetchBoardData]);
 
-  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(MouseSensor, { activationConstraint: { distance: 5 } }),
+    useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } })
+  );
 
   const findContainer = (id) => {
     if (lists.find(l => `list-${l.id}` === id)) return id;
