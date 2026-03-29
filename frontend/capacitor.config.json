@@ -1,0 +1,9 @@
+{
+  "appId": "com.amanpatel.todiist",
+  "appName": "TodiIst",
+  "webDir": "dist",
+  "server": {
+    "allowNavigation": ["trello-clone-aman.duckdns.org"],
+    "cleartext": true
+  }
+}
